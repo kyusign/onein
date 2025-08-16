@@ -37,6 +37,18 @@ pyinstaller ^
 
 The resulting executable is written to `dist/CommunityCrawler.exe`.
 
+### Quick Build Script
+
+For convenience, `build.bat` sets up a virtual environment and runs the
+PyInstaller command above. Simply double-click the script or run:
+
+```batch
+build.bat
+```
+
+Afterwards, distribute the contents of the `dist` folder. Users only need to
+unzip the archive and run `CommunityCrawler.exe`.
+
 ## Building (Nuitka)
 
 ```batch

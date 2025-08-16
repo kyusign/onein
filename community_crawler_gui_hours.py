@@ -32,6 +32,9 @@ USER_HOME = os.path.expanduser("~")
 DEFAULT_DESKTOP = os.path.join(USER_HOME, "Desktop")
 APP_DIR = os.path.join(os.getenv("APPDATA") or USER_HOME, "CommunityCrawler")
 LICENSE_PATH = os.path.join(APP_DIR, "license.lic")
+# exe(또는 스크립트)와 같은 폴더에 있는 라이선스도 지원
+EXE_DIR = os.path.dirname(os.path.abspath(sys.executable if getattr(sys, "frozen", False) else __file__))
+PORTABLE_LICENSE = os.path.join(EXE_DIR, "license.lic")
 
 # 내부 안전 한도
 MAX_PAGES_SOFT   = 50
@@ -123,14 +126,10 @@ def verify_license_text(lic_text: str):
         return False, f"라이선스 검증 실패: {e}", None
 
 def load_license_from_disk():
-    # 1) AppData 경로
-    candidates = [LICENSE_PATH]
-    # 2) 실행 파일과 동일한 경로 (포터블)
-    base = os.path.dirname(sys.executable if getattr(sys, "frozen", False) else os.path.abspath(__file__))
-    candidates.append(os.path.join(base, "license.lic"))
-    for path in candidates:
+    for path in (LICENSE_PATH, PORTABLE_LICENSE):
         try:
-            return open(path, "r", encoding="utf-8").read()
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read()
         except Exception:
             continue
     return None
