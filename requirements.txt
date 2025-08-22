@@ -1,0 +1,5 @@
+selenium==4.23.1
+webdriver-manager==4.0.2
+pandas==2.2.2
+openpyxl==3.1.5
+cryptography==43.0.1
